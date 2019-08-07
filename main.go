@@ -62,7 +62,10 @@ func main() {
 		if err != nil {
 			return c.HTML(http.StatusBadRequest, "<h1>fail</h1>")
 		}
+
 		fmt.Println(token)
+
+		// curl -H "Authorization: token <token>" https://api.github.com/user
 
 		return c.HTML(http.StatusOK, token.AccessToken)
 	})
