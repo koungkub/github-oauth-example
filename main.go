@@ -9,7 +9,6 @@ import (
 	"golang.org/x/oauth2/github"
 
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/random"
 	"github.com/spf13/viper"
 )
@@ -38,15 +37,6 @@ func main() {
 
 	state := random.String(8)
 
-	e.Use(
-		middleware.BodyDump(func(c echo.Context, req, res []byte) {
-			fmt.Print("req")
-			fmt.Println(string(req))
-			fmt.Print("res")
-			fmt.Println(string(res))
-		}),
-	)
-
 	e.GET("/", func(c echo.Context) error {
 		html := `
 			<a href="/oauth/github">login github here !!</a>	
@@ -56,7 +46,7 @@ func main() {
 
 	e.GET("/oauth/github", func(c echo.Context) error {
 		// allowSignup := oauth2.SetAuthURLParam("allow_signup", "true")
-		// url := githubOAuth.AuthCodeURL(code, allowSignup)
+		// url := githubOAuth.AuthCodeURL(state, allowSignup)
 		url := githubOAuth.AuthCodeURL(state)
 		return c.Redirect(http.StatusTemporaryRedirect, url)
 	})
@@ -67,9 +57,7 @@ func main() {
 
 		fmt.Println(code, newState)
 
-		html := `
-			<h1>koung</h1>
-		`
+		html := "<h1>" + code + "<- code -> state" + state + "</h1>"
 		return c.HTML(http.StatusOK, html)
 	})
 
