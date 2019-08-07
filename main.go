@@ -27,8 +27,11 @@ func main() {
 		ClientID:     viper.GetString("ID"),
 		ClientSecret: viper.GetString("SECRET"),
 		RedirectURL:  viper.GetString("REDIRECTURL"),
-		Scopes:       []string{},
-		Endpoint:     github.Endpoint,
+		Scopes: []string{
+			"repo",
+			"repo:status",
+		},
+		Endpoint: github.Endpoint,
 	}
 
 	code := random.String(8)
@@ -42,6 +45,7 @@ func main() {
 
 	e.GET("/oauth/github", func(c echo.Context) error {
 		// allowSignup := oauth2.SetAuthURLParam("allow_signup", "true")
+		// url := githubOAuth.AuthCodeURL(code, allowSignup)
 		url := githubOAuth.AuthCodeURL(code)
 		return c.Redirect(http.StatusTemporaryRedirect, url)
 	})
