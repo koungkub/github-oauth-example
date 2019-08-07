@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -46,6 +47,7 @@ func main() {
 	e.GET("/oauth/github", func(c echo.Context) error {
 		// allowSignup := oauth2.SetAuthURLParam("allow_signup", "true")
 		// url := githubOAuth.AuthCodeURL(code, allowSignup)
+		fmt.Println(code)
 		url := githubOAuth.AuthCodeURL(code)
 		return c.Redirect(http.StatusTemporaryRedirect, url)
 	})
