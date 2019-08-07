@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -57,8 +58,13 @@ func main() {
 
 		fmt.Println(code, newState)
 
-		html := "<h1>" + code + "<- code state -> " + state + "</h1>"
-		return c.HTML(http.StatusOK, html)
+		token, err := githubOAuth.Exchange(context.Background(), code)
+		if err != nil {
+			return c.HTML(http.StatusBadRequest, "<h1>fail</h1>")
+		}
+		fmt.Println(token)
+
+		return c.HTML(http.StatusOK, token.AccessToken)
 	})
 
 	log.Fatal(e.Start(":1323"))
