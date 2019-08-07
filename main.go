@@ -36,7 +36,7 @@ func main() {
 		Endpoint: github.Endpoint,
 	}
 
-	code := random.String(8)
+	state := random.String(8)
 
 	e.Use(
 		middleware.BodyDump(func(c echo.Context, req, res []byte) {
@@ -57,12 +57,20 @@ func main() {
 	e.GET("/oauth/github", func(c echo.Context) error {
 		// allowSignup := oauth2.SetAuthURLParam("allow_signup", "true")
 		// url := githubOAuth.AuthCodeURL(code, allowSignup)
-		url := githubOAuth.AuthCodeURL(code)
+		url := githubOAuth.AuthCodeURL(state)
 		return c.Redirect(http.StatusTemporaryRedirect, url)
 	})
 
 	e.GET("/oauth/callback", func(c echo.Context) error {
-		return nil
+		code := c.QueryParam("code")
+		newState := c.QueryParam("state")
+
+		fmt.Println(code, newState)
+
+		html := `
+			<h1>koung</h1>
+		`
+		return c.HTML(http.StatusOK, html)
 	})
 
 	log.Fatal(e.Start(":1323"))
