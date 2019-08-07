@@ -57,7 +57,7 @@ func main() {
 
 		fmt.Println(code, newState)
 
-		html := "<h1>" + code + "<- code -> state" + state + "</h1>"
+		html := "<h1>" + code + "<- code state -> " + state + "</h1>"
 		return c.HTML(http.StatusOK, html)
 	})
 
