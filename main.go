@@ -60,7 +60,7 @@ func main() {
 
 		token, err := githubOAuth.Exchange(context.Background(), code)
 		if err != nil {
-			return c.HTML(http.StatusBadRequest, "<h1>fail</h1>")
+			return c.HTML(http.StatusBadRequest, "<h1>fail "+err.Error()+"</h1>")
 		}
 
 		fmt.Println(token)
